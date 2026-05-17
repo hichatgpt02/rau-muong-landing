@@ -71,32 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===== GOOGLE APPS SCRIPT API =====
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyfqTWj-T4uZXwVOknruhoAD3ESXkRcVNddYcDcoNeorf82YMbiJXnl5DtMZ3IzW6PW/exec';
 
-  // ===== TELEGRAM BOT API =====
-  const TELEGRAM_BOT_TOKEN = '8724084496:AAEy2Ki37qaZw8Y3zUtB8fM0uWoNAaSHSc0';
-  const TELEGRAM_CHAT_ID = '-5009829901';
-
-  async function sendTelegram(data) {
-    const priceText = (data.price || 0).toLocaleString('vi-VN') + 'đ';
-    const message = `🛒 *ĐƠN HÀNG MỚI \\- Rau Muống Lá Tre*\n\n👤 *Khách hàng:* ${escTg(data.name)}\n📞 *SĐT:* ${escTg(data.phone)}\n📍 *Địa chỉ:* ${escTg(data.address)}\n📦 *Số lượng:* ${data.quantity} gói\n💰 *Thanh toán:* ${escTg(priceText)} \\(COD\\)\n📝 *Ghi chú:* ${escTg(data.note || 'Không')}\n🌐 *IP:* ${escTg(data.ip || 'N/A')}\n⏰ *Thời gian:* ${escTg(new Date().toLocaleString('vi-VN'))}`;
-
-    try {
-      await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: TELEGRAM_CHAT_ID,
-          text: message,
-          parse_mode: 'MarkdownV2'
-        })
-      });
-    } catch (err) {
-      console.error('Telegram error:', err);
-    }
-  }
-
-  function escTg(str) {
-    return String(str).replace(/([_*\[\]()~`>#+\-=|{}.!])/g, '\\$1');
-  }
+  // ===== TELEGRAM =====
+  // Telegram được gửi từ Google Apps Script (server-side)
+  // Không gửi từ client để tránh trùng thông báo
 
   // ===== SUBMIT ORDER =====
   const buyFormEl = document.getElementById('buyForm');
@@ -167,8 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
             body: JSON.stringify(data)
           });
         }
-        // Gửi thông báo Telegram
-        await sendTelegram(data);
+        // Telegram được gửi từ Google Apps Script (không gửi ở đây để tránh trùng)
 
         // Facebook Pixel - Track Purchase
         if (typeof fbq === 'function') {

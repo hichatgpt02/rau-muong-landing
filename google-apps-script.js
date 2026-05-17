@@ -44,20 +44,26 @@ function saveToSheet(data) {
   // Tạo sheet nếu chưa có
   if (!sheet) {
     sheet = ss.insertSheet('DonHang');
-    sheet.appendRow([
-      'Thời gian', 'Họ tên', 'SĐT', 'Địa chỉ', 
+    sheet.getRange(1, 1, 1, 11).setValues([[
+      'STT', 'Thời gian', 'Họ tên', 'SĐT', 'Địa chỉ', 
       'Số lượng', 'Giá', 'Ghi chú', 'Nguồn', 'IP', 'Trạng thái'
-    ]);
+    ]]);
     // Format header
-    sheet.getRange(1, 1, 1, 10).setFontWeight('bold').setBackground('#4caf50').setFontColor('#fff');
+    sheet.getRange(1, 1, 1, 11).setFontWeight('bold').setBackground('#4caf50').setFontColor('#fff');
     sheet.setFrozenRows(1);
   }
   
   const priceMap = {'5': '110.000đ', '10': '150.000đ', '20': '230.000đ'};
   const priceDisplay = data.price ? Number(data.price).toLocaleString('vi-VN') + 'đ' : (priceMap[data.quantity] || '');
   
-  // Thêm đơn hàng
-  sheet.appendRow([
+  // Tìm dòng cuối cùng có dữ liệu (tránh dòng trống)
+  const lastRow = sheet.getLastRow();
+  const nextRow = lastRow + 1;
+  const stt = lastRow; // STT = số dòng dữ liệu (trừ header)
+  
+  // Ghi đơn hàng vào đúng dòng tiếp theo
+  sheet.getRange(nextRow, 1, 1, 11).setValues([[
+    stt,
     new Date().toLocaleString('vi-VN'),
     data.name || '',
     data.phone || '',
@@ -68,7 +74,7 @@ function saveToSheet(data) {
     data.source || 'Website',
     data.ip || 'N/A',
     'Mới'
-  ]);
+  ]]);
 }
 
 // ===== GỬI TELEGRAM =====
