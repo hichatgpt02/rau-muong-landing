@@ -42,6 +42,10 @@ a { text-decoration: none; color: inherit; }
 .divider { color: #ddd; }
 .sold-count { color: #888; }
 
+/* Product Highlights */
+.product-highlights { background: #f0f7f0; border-left: 4px solid #2e7d32; border-radius: 8px; padding: 16px 20px; margin-bottom: 16px; }
+.highlight-item { font-size: .95rem; color: #333; padding: 5px 0; line-height: 1.5; }
+
 /* Price Box */
 .product-price-box { background: #fef5f0; padding: 16px 20px; border-radius: 8px; display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
 .price-current { font-size: 2rem; font-weight: 800; color: #e53e3e; }
